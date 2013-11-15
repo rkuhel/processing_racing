@@ -14,6 +14,9 @@ MultiMarker augmentedRealityMarkers;
 //car object
 Car theCar;
 
+//board object
+Board theBoard; 
+
 // rotation value for spinning our pikachus
 int angle = 0;
 
@@ -83,10 +86,20 @@ void draw()
         }
         if (keyCode == UP)
         {
-        theCar.forward();
+        theCar.up();
+        }
+        if (keyCode == DOWN)
+        {
+        theCar.down();
         }
       }
       theCar.display();
+      
+      pushMatrix();
+      fill(0);
+      translate(-200,-200,0);
+      rect(0,0,width-100,height-100);
+      popMatrix(); 
       
       // reset to the default perspective
       perspective();
