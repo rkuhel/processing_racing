@@ -1,9 +1,17 @@
 class Car 
 {
+  //position and angle of wheels 
   float xPos;
   float yPos; 
   float zPos;
-  int angle = 0; 
+  int angle = 0;
+  float speed = 7;  
+  
+  //car keep track of score and tracker 
+  int score;
+  int tracker; 
+  
+  
   
 
  
@@ -12,7 +20,7 @@ class Car
   {
     xPos = x;
     yPos = y;
-    xPos = z; 
+    zPos = z; 
   }
   void display()
   {
@@ -92,28 +100,79 @@ class Car
   }
   void right()
   {
-    xPos+=5;
-    println("xPos " + xPos);
+    xPos+=speed;
   }
   void left()
   {
-    xPos-=5; 
-    println("xPos " + xPos);
-//    angle-=3; 
-//    rotate( radians(angle) );
+    xPos-=speed; 
+
   }
   void up()
   {
-   yPos-=5; 
-   println("yPos " + yPos);
+   yPos-=speed; 
   }
   void down()
   {
-   yPos+=5; 
-   println("yPos " + yPos);
+   yPos+=speed; 
   }
-
-  
-
+ 
+ void keepScore()
+ {
    
+   
+   if(tracker == 0)
+   {
+     if(xPos < 0 && yPos < 0)
+     {
+       tracker++;
+       println("tracker: " + tracker); 
+     }
+   }
+   if(tracker == 1)
+   {
+     if(xPos > 0 && yPos < 0)
+     {
+       tracker++; 
+       println("tracker: " + tracker); 
+
+     }
+   }
+   if(tracker == 2)
+   {
+     if(xPos > 0 && yPos > 0)
+     {
+       tracker++; 
+       println("tracker: " + tracker); 
+
+     }
+   }
+   if(tracker == 3)
+   {
+     if(xPos < 0 && yPos > 0)
+     {
+       tracker++; 
+     }
+   }
+   if(tracker == 4)
+   {
+     if(xPos < 0 && yPos < 0)
+     {
+       tracker=0;
+       println("tracker: " + tracker);
+       if (xPos < 0 && (yPos < 0 && yPos > -10) )
+       {
+        score++;
+       }  
+     }
+   }
+ }
+
+void winGame()
+{
+  if (score > 0)
+  {
+    fill(255,0,0); 
+    text("GAME OVER YOU WIN",50,50);
+  }
+}
 }

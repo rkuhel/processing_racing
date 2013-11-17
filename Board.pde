@@ -1,8 +1,11 @@
 class Board 
 {
+  //posiiton 
   float xPos;
   float yPos;
   
+ 
+    
 
   void display()
   {
@@ -11,5 +14,6 @@ class Board
     translate(0,0,0);
     rect(0,0,100,100);
     popMatrix();
+    
   }
 }

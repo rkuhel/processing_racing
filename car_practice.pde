@@ -15,10 +15,14 @@ MultiMarker augmentedRealityMarkers;
 Car theCar;
 
 //board object
-Board theBoard; 
+Board theBoard;
+
+//create barrier
+Barrier theBarrier; 
 
 // rotation value for spinning our pikachus
 int angle = 0;
+
 
 void setup() 
 {
@@ -39,12 +43,26 @@ void setup()
   // 80 is the width of the pattern
   augmentedRealityMarkers.addARMarker("patt.hiro", 80);
   
-  theCar = new Car(40,40,20);
+  theCar = new Car(-100,0,20);
+  theBarrier = new Barrier(50,0,0); 
 
 }
 
 void draw()
 {
+
+  
+  int seconds = int( millis()/1000 );
+  fill(255,255,255);
+  text("Time: " + seconds, 10,10);
+  text("Laps: " + theCar.score, 10,20);
+  
+  //update score 
+  theCar.keepScore(); 
+  theCar.winGame(); 
+  
+  //draw the barrier
+
   // we only really want to do something if there is fresh data from the camera waiting for us
   if (video.available())
   {
@@ -94,6 +112,9 @@ void draw()
         }
       }
       theCar.display();
+      theBarrier.display();
+      theBarrier.hit();  
+
       
       pushMatrix();
       fill(0);
