@@ -45,7 +45,7 @@ void setup()
   
   theCar = new Car(width/3, height/3, 0);
   theBarrier = new Barrier(50,0,0); 
-
+  
 }
 
 void draw()
@@ -119,6 +119,7 @@ void draw()
       {
         theCar.carReverse();
       }
+      theCar.bumper(); 
       theCar.move(); 
       theCar.display();
       theBarrier.display();
@@ -126,7 +127,7 @@ void draw()
 
       
       pushMatrix();
-      fill(0);
+      fill(255,255,255);
       translate(-200,-200,0);
       rect(0,0,width-100,height-100);
       popMatrix(); 

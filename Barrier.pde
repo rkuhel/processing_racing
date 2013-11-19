@@ -18,7 +18,7 @@ class Barrier
  void display()
  {
    pushMatrix();
-   fill(255);
+   fill(0,0,0);
    translate(xPos,yPos,zPos);
    box(150,100,100);
    popMatrix(); 

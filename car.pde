@@ -7,13 +7,14 @@ class Car
   float dx = 0.0;
   float dy = 0.0;
   float angle;
-  float angleB; 
+  float angleB;
   
   //car keep track of score and tracker 
   int score;
   int tracker; 
   
-  
+
+
   
 
  
@@ -113,6 +114,7 @@ class Car
       fill(0,0,255,100);
       box(40,10,10);
       popMatrix();
+      
   
 
  }
@@ -146,9 +148,7 @@ void carReverse()
 
 
 void move()
-{
-  println(angle + ", " + dx + ", " + dy);
-  
+{  
   this.xPos += (this.dx * 1.5);
   this.yPos += ( this.dy * 1.5);
   
@@ -169,7 +169,6 @@ void move()
      if(xPos < 0 && yPos < 0)
      {
        tracker++;
-       println("tracker: " + tracker); 
      }
    }
    if(tracker == 1)
@@ -177,8 +176,6 @@ void move()
      if(xPos > 0 && yPos < 0)
      {
        tracker++; 
-       println("tracker: " + tracker); 
-
      }
    }
    if(tracker == 2)
@@ -186,8 +183,6 @@ void move()
      if(xPos > 0 && yPos > 0)
      {
        tracker++; 
-       println("tracker: " + tracker); 
-
      }
    }
    if(tracker == 3)
@@ -202,7 +197,6 @@ void move()
      if(xPos < 0 && yPos < 0)
      {
        tracker=0;
-       println("tracker: " + tracker);
        if (xPos < 0 && (yPos < 0 && yPos > -10) )
        {
         score++;
@@ -219,4 +213,37 @@ void winGame()
     text("GAME OVER YOU WIN",50,50);
   }
 }
+
+// checks to see if we hit anything 
+void bumper()
+{
+  
+      
+      // grab the 2D position here - this is what we will use to look at the video stream to see what color is behind this pixel
+      int xBumper = (int)screenX(xPos,yPos,zPos);
+      int yBumper = (int)screenY(xPos,yPos,zPos);
+      // ok, now we can use our xPos and yPos variables to grab the color value
+      video.loadPixels();
+      int location = xBumper + yBumper*video.width;
+      color sampleColor = color(video.pixels[location]);
+      
+      // let's look at the color value in terms of how much red it has.
+      // remember that white = 255,255,255
+      // so if we see a high red value we can probably assume the color here is white
+      // and a low value will be less than white
+      float redness = red(sampleColor);
+      
+      if (redness < 250)
+      {
+        println("board!");
+      }  
+      
+      else
+      {
+        println("barrier");  
+      }   
+
+}
+
+
 }
