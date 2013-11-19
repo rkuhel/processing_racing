@@ -43,7 +43,7 @@ void setup()
   // 80 is the width of the pattern
   augmentedRealityMarkers.addARMarker("patt.hiro", 80);
   
-  theCar = new Car(-100,0,20);
+  theCar = new Car(width/3, height/3, 0);
   theBarrier = new Barrier(50,0,0); 
 
 }
@@ -96,24 +96,33 @@ void draw()
       {
         if (keyCode == RIGHT)
         {
-        theCar.right();
+        theCar.moveRight();
         }
         if (keyCode == LEFT)
         {
-        theCar.left();
+        theCar.moveLeft();
         }
         if (keyCode == UP)
         {
-        theCar.up();
+        theCar.moveUp();
         }
         if (keyCode == DOWN)
         {
-        theCar.down();
+        theCar.moveDown();
         }
       }
+      if (keyPressed && key == 'a' )
+      {
+           theCar.move(); 
+      }
+      if (keyPressed && key == 'b' )
+      {
+        theCar.carReverse();
+      }
+      theCar.move(); 
       theCar.display();
       theBarrier.display();
-      theBarrier.hit();  
+//      theBarrier.hit();  
 
       
       pushMatrix();

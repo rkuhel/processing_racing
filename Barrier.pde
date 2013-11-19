@@ -24,24 +24,24 @@ class Barrier
    popMatrix(); 
  }
  
- void hit()
- {  
-   println("distance " + dist(theCar.xPos, theCar.yPos, theCar.zPos, theBarrier.xPos, theBarrier.yPos, theBarrier.zPos)); 
-   
-   if ( dist(theCar.xPos, theCar.yPos, theCar.zPos, theBarrier.xPos, theBarrier.yPos, theBarrier.zPos) < 100 )
-   {
-    println("HIT!!!!");
-    if (theCar.speed > 0)
-    {
-    theCar.speed*=-1;
-    }
-    
-    
-    println("speed"); 
-   }
-   else
-   {
-     theCar.speed = 7; 
-   }
- } 
+// void hit()
+// {  
+//   println("distance " + dist(theCar.xPos, theCar.yPos, theCar.zPos, theBarrier.xPos, theBarrier.yPos, theBarrier.zPos)); 
+//   
+//   if ( dist(theCar.xPos, theCar.yPos, theCar.zPos, theBarrier.xPos, theBarrier.yPos, theBarrier.zPos) < 100 )
+//   {
+//    println("HIT!!!!");
+//    if (theCar.speed > 0)
+//    {
+//    theCar.speed*=-1;
+//    }
+//    
+//    
+//    println("speed"); 
+//   }
+//   else
+//   {
+//     theCar.speed = 7; 
+//   }
+// } 
 }

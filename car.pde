@@ -4,8 +4,10 @@ class Car
   float xPos;
   float yPos; 
   float zPos;
-  int angle = 0;
-  float speed = 7;  
+  float dx = 0.0;
+  float dy = 0.0;
+  float angle;
+  float angleB; 
   
   //car keep track of score and tracker 
   int score;
@@ -21,24 +23,26 @@ class Car
     xPos = x;
     yPos = y;
     zPos = z; 
+
   }
   void display()
   {
-      // box on the other corner of the marker
+ // box on the other corner of the marker
       pushMatrix();
       float Cx = constrain(xPos, -190, 320);  
       float Cy = constrain(yPos, -180, 170);
       lights();
       translate(Cx+5,Cy+5,zPos+5);
+      rotate(radians(angle));
       fill(255,0,0);
-      if (angle < 360 )
+      if (angleB < 360 )
       {
-        rotate (radians (angle) );
-        angle+=5; 
+        rotate (radians (angleB) );
+        angleB+=5; 
       }
       else 
       {
-        angle=0;
+        angleB=0;
       }
       sphereDetail(6);
       sphere(5);
@@ -48,15 +52,16 @@ class Car
       noStroke();
       lights();
       translate(Cx-15,Cy+5,zPos+5);
+      rotate(radians(angle));
       fill(255,0,0);
-      if (angle < 360 )
+      if (angleB < 360 )
       {
-        rotate (radians (angle) );
-        angle+=5; 
+        rotate (radians (angleB) );
+        angleB+=5; 
       }
       else 
       {
-        angle=0;
+        angleB=0;
 
       }
       sphereDetail(6);
@@ -67,15 +72,16 @@ class Car
       noStroke();
       lights();
       translate(Cx-15,Cy-5,zPos+5);
+      rotate(radians(angle));
       fill(255,0,0);
-      if (angle < 360 )
+      if (angleB < 360 )
       {
-        rotate (radians (angle) );
-        angle+=5; 
+        rotate (radians (angleB) );
+        angleB+=5; 
       }
       else 
       {
-        angle=0;
+        angleB=0;
       }
       sphereDetail(6);
       sphere(5);
@@ -85,6 +91,16 @@ class Car
       noStroke();
       lights();
       translate(Cx+5,Cy-5,zPos+5);
+      rotate(radians(angle));
+      if (angleB < 360 )
+      {
+        rotate (radians (angleB) );
+        angleB+=5; 
+      }
+      else 
+      {
+        angleB=0;
+      }
       fill(255,0,0);
       sphere(5);
       popMatrix();
@@ -93,28 +109,56 @@ class Car
 
       pushMatrix();
       translate(Cx,Cy,zPos+10);
+      rotate(radians(angle));
       fill(0,0,255,100);
       box(40,10,10);
       popMatrix();
   
-  }
-  void right()
-  {
-    xPos+=speed;
-  }
-  void left()
-  {
-    xPos-=speed; 
 
-  }
-  void up()
-  {
-   yPos-=speed; 
-  }
-  void down()
-  {
-   yPos+=speed; 
-  }
+ }
+
+void moveRight()
+{
+  this.angle+=5;
+  this.dx = cos( radians(angle) );
+  this.dy = sin( radians(angle) );  
+}
+void moveLeft()
+{
+  this.angle-=5;
+  this.dx = cos( radians(angle) );
+  this.dy = sin( radians(angle) );  
+}
+
+void moveUp()
+{
+  yPos--;  
+}
+void moveDown()
+{
+  yPos++; 
+}
+void carReverse()
+{
+  xPos--; 
+}
+
+
+
+void move()
+{
+  println(angle + ", " + dx + ", " + dy);
+  
+  this.xPos += (this.dx * 1.5);
+  this.yPos += ( this.dy * 1.5);
+  
+}
+
+
+
+
+
+
  
  void keepScore()
  {
