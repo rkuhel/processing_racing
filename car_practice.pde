@@ -18,7 +18,11 @@ Car theCar;
 Board theBoard;
 
 //create barrier
-Barrier theBarrier; 
+Barrier theBarrier;
+
+Power thePower;
+
+Spin theSpin;
 
 // rotation value for spinning our pikachus
 int angle = 0;
@@ -45,6 +49,9 @@ void setup()
   
   theCar = new Car(width/3, height/3, 0);
   theBarrier = new Barrier(50,0,0); 
+  thePower = new Power(100,100,20);
+  theSpin = new Spin ( 150,150, 20);
+
   
 }
 
@@ -102,14 +109,6 @@ void draw()
         {
         theCar.moveLeft();
         }
-        if (keyCode == UP)
-        {
-        theCar.moveUp();
-        }
-        if (keyCode == DOWN)
-        {
-        theCar.moveDown();
-        }
       }
       if (keyPressed && key == 'a' )
       {
@@ -119,10 +118,19 @@ void draw()
       {
         theCar.carReverse();
       }
-      theCar.bumper(); 
-      theCar.move(); 
       theCar.display();
       theBarrier.display();
+      thePower.display();
+      thePower.powerUp();
+      theSpin.display();
+      theSpin.spinUp();
+      theCar.move(); 
+ 
+      
+      
+
+      theCar.bumper(); 
+
 //      theBarrier.hit();  
 
       
