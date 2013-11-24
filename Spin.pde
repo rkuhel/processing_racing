@@ -13,8 +13,8 @@ class Spin
   }
   boolean spinUp()
   {
-    println("distance: to box " + dist(theCar.xPos, theCar.yPos, theCar.zPos, theSpin.xPos, theSpin.yPos, theSpin.zPos) );
-    if( (dist(theCar.xPos, theCar.yPos, theCar.zPos, theSpin.xPos, theSpin.yPos, theSpin.zPos) < 50) || (counter < 150 && counter > 0) )
+  
+    if( ( (dist(playerA.xPos, playerA.yPos, playerA.zPos, theSpin.xPos, theSpin.yPos, theSpin.zPos) < 50) || (dist(playerB.xPos, playerB.yPos, playerB.zPos, theSpin.xPos, theSpin.yPos, theSpin.zPos) < 50) ) || (counter < 150 && counter > 0) )
     {
       counter--;
       return true; 

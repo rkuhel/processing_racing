@@ -20,7 +20,7 @@ class Barrier
    pushMatrix();
    fill(0,0,0);
    translate(xPos,yPos,zPos);
-   box(150,100,100);
+   sphere(90);
    popMatrix(); 
  }
  

@@ -12,7 +12,8 @@ Capture video;
 MultiMarker augmentedRealityMarkers;
 
 //car object
-Car theCar;
+Car playerA;
+Car playerB;
 
 //board object
 Board theBoard;
@@ -23,6 +24,11 @@ Barrier theBarrier;
 Power thePower;
 
 Spin theSpin;
+
+boolean thisSwitch = true; 
+
+//race track image
+PImage background; 
 
 // rotation value for spinning our pikachus
 int angle = 0;
@@ -47,26 +53,34 @@ void setup()
   // 80 is the width of the pattern
   augmentedRealityMarkers.addARMarker("patt.hiro", 80);
   
-  theCar = new Car(width/3, height/3, 0);
+  playerB = new Car(-100, 0, 0);
+  playerA = new Car(-60, 0, 0);
+
   theBarrier = new Barrier(50,0,0); 
   thePower = new Power(100,100,20);
   theSpin = new Spin ( 150,150, 20);
-
   
+  background = loadImage("racetrack.png");
 }
 
 void draw()
 {
 
+
+
   
   int seconds = int( millis()/1000 );
   fill(255,255,255);
   text("Time: " + seconds, 10,10);
-  text("Laps: " + theCar.score, 10,20);
+  text("Player A: " + playerA.score, 10,20);
+  text("Player B: " + playerB.score, 10,30);
+  
   
   //update score 
-  theCar.keepScore(); 
-  theCar.winGame(); 
+  playerA.keepScore(); 
+  playerA.winGame(); 
+  playerB.keepScore(); 
+  playerB.winGame(); 
   
   //draw the barrier
 
@@ -98,48 +112,86 @@ void draw()
       // then the x & y axis will be flipped)     
       scale(-1, -1);
 
-
+      // player A
       if (keyPressed && key == CODED )
       {
         if (keyCode == RIGHT)
         {
-        theCar.moveRight();
+        playerA.moveRight();
         }
         if (keyCode == LEFT)
         {
-        theCar.moveLeft();
+        playerA.moveLeft();
         }
       }
-      if (keyPressed && key == 'a' )
+      if (keyPressed && key == 'm' )
       {
-           theCar.move(); 
+           playerA.move(); 
       }
-      if (keyPressed && key == 'b' )
+      if (keyPressed && key == 'n' )
       {
-        theCar.carReverse();
+        playerA.carReverse();
       }
-      theCar.display();
+      
+      // Player B
+      if (keyPressed)
+      {
+        if (key == 'd')
+        {
+        playerB.moveRight();
+        }
+        if (key == 'a')
+        {
+        playerB.moveLeft();
+        }
+      }
+      if (keyPressed && key == 'w' )
+      {
+           playerB.move(); 
+      }
+      if (keyPressed && key == 's' )
+      {
+        playerB.carReverse();
+      }
+      playerA.display();
+      playerB.display();
+
       theBarrier.display();
-      thePower.display();
       thePower.powerUp();
+      if (thePower.powerUp() == false && thisSwitch == false)
+      {
+        println("no display!");
+      }
+      if (thePower.powerUp() == true) 
+      {
+        thisSwitch = false;
+      }
+      if(thisSwitch == true)
+      {
+      thePower.display();
+      }
+
       theSpin.display();
       theSpin.spinUp();
-      theCar.move(); 
+      playerA.move(); 
+      playerB.move(); 
+
  
-      
-      
-
-      theCar.bumper(); 
-
-//      theBarrier.hit();  
-
-      
       pushMatrix();
-      fill(255,255,255);
-      translate(-200,-200,0);
-      rect(0,0,width-100,height-100);
-      popMatrix(); 
+      imageMode(CENTER);
+      translate(-700,-500,-40);
+      image(background, width,height);
+      popMatrix();   
       
+
+      playerA.bumper(); 
+      playerB.bumper(); 
+
+
+
+
+
+
       // reset to the default perspective
       perspective();
 

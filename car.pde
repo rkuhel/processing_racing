@@ -10,6 +10,8 @@ class Car
   float angleB;
   float speed; 
   
+  float red, blue, green; 
+  
   float sensorX, sensorY;
 
   //car keep track of score and tracker 
@@ -18,11 +20,6 @@ class Car
   
   int bounce; 
 
-
-
-
-
-
   //constructor 
   Car(float x, float y, float z)
   {
@@ -30,17 +27,22 @@ class Car
     yPos = y;
     zPos = z;
     
+    red = random(255); 
+    blue = random(255); 
+    green = random(255);   
+  
+  
     sensorX = 0;
     sensorY = 0;    
   }
   void display()
   {
 
-    float Cx = constrain(xPos, -190, 320);  
-    float Cy = constrain(yPos, -180, 170);
+//    float Cx = constrain(xPos, -190, 320);  
+//    float Cy = constrain(yPos, -180, 170);
     
     pushMatrix();
-    translate(Cx, Cy, zPos);
+    translate(xPos, yPos, zPos);
     rotate(radians(angle));
     
     // box on the other corner of the marker
@@ -118,19 +120,20 @@ class Car
 
 
     translate(0, 0, 10);
-    fill(0, 0, 255, 100);
+    fill(red, blue, green, 100);
     box(40, 10, 10);
 
 
     // now draw the sensor
     fill(0,255,0);
-    translate(40,0,0);
-//    box(10,10,10);  // put back in to see the sensor
+    translate(30,0,-55);
+    box(10,10,10);  // put back in to see the sensor
     
     sensorX = screenX(0,0,0);
     sensorY = screenY(0,0,0);
     
-//    println("This should be it!!! " + sensorX + ", " + sensorY);
+    
+    println("SensorX and SensorY " + sensorX + ", " + sensorY);
 
     popMatrix();
     
@@ -311,7 +314,7 @@ class Car
 
   void winGame()
   {
-    if (score > 0)
+    if (score > 3)
     {
       fill(255, 0, 0); 
       text("GAME OVER YOU WIN", 50, 50);
@@ -341,8 +344,10 @@ class Car
       float redness = red(sampleColor);
       float greenness = green(sampleColor);
       float blueness = blue(sampleColor);
-
-      if (redness < 20)
+      
+      println("redness " + redness);
+      
+      if (redness < 20 && blueness < 20 && greenness < 20)
       {
          speed = 0;   
       }  
@@ -352,20 +357,20 @@ class Car
         if (thePower.powerUp() == true)
         {
           println("hit the box!"); 
-          speed = 15.0; 
+          speed = 10.0; 
           println("speed " + speed);
         }
         else 
         { 
-          speed = 5.0; 
+          speed = 3.0; 
         }
         if (theSpin.spinUp() == true )
         {
-          speed = 1; 
+          speed = 2; 
         }
         else
         {
-          speed = 5; 
+          speed = 3; 
         }
       }
     }
