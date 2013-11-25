@@ -12,7 +12,7 @@ class Car
   
   float red, blue, green; 
   
-  float sensorX, sensorY;
+  float sensorX, sensorY, sensorLeftX, sensorLeftY, sensorRightX, sensorRightY;
 
   //car keep track of score and tracker 
   int score;
@@ -118,159 +118,71 @@ class Car
     popMatrix();
 
 
-
+    pushMatrix();
     translate(0, 0, 10);
     fill(red, blue, green, 100);
     box(40, 10, 10);
-
-
-    // now draw the sensor
-    fill(0,255,0);
-    translate(30,0,-55);
-    box(10,10,10);  // put back in to see the sensor
-    
-    sensorX = screenX(0,0,0);
-    sensorY = screenY(0,0,0);
-    
-    
-    println("SensorX and SensorY " + sensorX + ", " + sensorY);
-
     popMatrix();
     
-    
-    
-    
-//    // box on the other corner of the marker
-//    pushMatrix();
-//    float Cx = constrain(xPos, -190, 320);  
-//    float Cy = constrain(yPos, -180, 170);
-//    lights();
-//    
-//    translate(Cx+5, Cy+5, zPos+5);
-//    rotate(radians(angle));
-//    fill(255, 0, 0);
-//    if (angleB < 360 )
-//    {
-//      rotate (radians (angleB) );
-//      angleB+=5;
-//    }
-//    else 
-//    {
-//      angleB=0;
-//    }
-//    sphereDetail(6);
-//    sphere(5);
-//    popMatrix();
-//
-//    pushMatrix();
-//    noStroke();
-//    lights();
-//    translate(Cx-15, Cy+5, zPos+5);
-//    rotate(radians(angle));
-//    fill(255, 0, 0);
-//    if (angleB < 360 )
-//    {
-//      rotate (radians (angleB) );
-//      angleB+=5;
-//    }
-//    else 
-//    {
-//      angleB=0;
-//    }
-//    sphereDetail(6);
-//    sphere(5);
-//    popMatrix();
-//
-//    pushMatrix();
-//    noStroke();
-//    lights();
-//    translate(Cx-15, Cy-5, zPos+5);
-//    rotate(radians(angle));
-//    fill(255, 0, 0);
-//    if (angleB < 360 )
-//    {
-//      rotate (radians (angleB) );
-//      angleB+=5;
-//    }
-//    else 
-//    {
-//      angleB=0;
-//    }
-//    sphereDetail(6);
-//    sphere(5);
-//    popMatrix();
-//
-//    pushMatrix();
-//    noStroke();
-//    lights();
-//    translate(Cx+5, Cy-5, zPos+5);
-//    rotate(radians(angle));
-//    if (angleB < 360 )
-//    {
-//      rotate (radians (angleB) );
-//      angleB+=5;
-//    }
-//    else 
-//    {
-//      angleB=0;
-//    }
-//    fill(255, 0, 0);
-//    sphere(5);
-//    popMatrix();
-//
-//
-//
-//    pushMatrix();
-//    translate(Cx, Cy, zPos+10);
-//    rotate(radians(angle));
-//    fill(0, 0, 255, 100);
-//    box(40, 10, 10);
-//    popMatrix();    
-    
-      
-  }
+    // now compute forward sensor position
+    pushMatrix();
+    fill(0,255,0);
+    translate(30,0,0);
+//    box(10,10,10);  // put back in to see the sensor
+    sensorX = screenX(0,0,0);
+    sensorY = screenY(0,0,0);
+    popMatrix();
+
+    // not compute the left sensor
+    pushMatrix();
+    fill(255,0,0);
+    translate(30,-15,0);
+    sensorLeftX = screenX(0,0,0);
+    sensorLeftY = screenY(0,0,0);
+//    box(10,10,10);
+    popMatrix();
+
+
+    pushMatrix();
+    fill(0,0,255);
+    translate(30,15,0);
+    sensorRightX = screenX(0,0,0);
+    sensorRightY = screenY(0,0,0);
+//    box(10,10,10);
+    popMatrix();
+
+
+// screenX would go here
+
+popMatrix();
+                
+}
 
   void moveRight()
   {
-    this.angle+=5;
+    this.angle+=15;
     this.dx = cos( radians(angle) );
     this.dy = sin( radians(angle) );
-     
-    sensorX = xPos + 20;
-    sensorY = yPos;  
   }
   void moveLeft()
   {
-    this.angle-=5;
+    this.angle-=15;
     this.dx = cos( radians(angle) );
     this.dy = sin( radians(angle) );
-    
-    sensorX = xPos - 20;
-    sensorY = yPos; 
+ 
   }
   void carReverse()
   {
     xPos--;
   }
-
-
-
   void move()
   {  
     this.xPos += (this.dx * speed);
     this.yPos += (this.dy * speed);
   }
 
-
-
-
-
-
-
   void keepScore()
   {
-
-
     if (tracker == 0)
     {
       if (xPos < 0 && yPos < 0)
@@ -314,10 +226,23 @@ class Car
 
   void winGame()
   {
-    if (score > 3)
+    if (playerA.score > 0)
     {
-      fill(255, 0, 0); 
-      text("GAME OVER YOU WIN", 50, 50);
+      background(255, 204, 0);
+      fill(255,255,255);
+      state = 1; 
+      println("playerA wins!");
+    }
+    else if (playerB.score > 0)
+    {
+      background(255, 204, 255);
+      fill(255,255,255);
+      state = 2; 
+      println("playerB wins!");
+    }
+    else 
+    {
+      println("play mode - race is still going!");
     }
   }
 
@@ -329,25 +254,43 @@ class Car
     // grab the 2D position here - this is what we will use to look at the video stream to see what color is behind this pixel
     int xBumper = (int)sensorX;
     int yBumper = (int)sensorY;
+    
+    int xBumperRight = (int)sensorRightX;
+    int yBumperRight = (int)sensorRightY;
+    
+    int xBumperLeft = (int)sensorLeftX;
+    int yBumperLeft = (int)sensorLeftY;
     // ok, now we can use our xPos and yPos variables to grab the color value
     loadPixels();
-    int location = xBumper + yBumper*width;
+    int locationForward = xBumper + yBumper*width;
+    int locationRight = xBumperRight + yBumperRight*width;
+    int locationLeft = xBumperLeft + yBumperLeft*width;
+
     
-    if (location < pixels.length && location >= 0)
+    if (locationForward < pixels.length && locationForward >= 0 || locationRight < pixels.length && locationRight >= 0 ||locationLeft < pixels.length && locationLeft >= 0 )
     {
-      color sampleColor = color(pixels[location]);
+      color sampleColorForward = color(pixels[locationForward]);
+      color sampleColorRight = color(pixels[locationRight]);
+      color sampleColorLeft = color(pixels[locationLeft]);
+
 
       // let's look at the color value in terms of how much red it has.
       // remember that white = 255,255,255
       // so if we see a high red value we can probably assume the color here is white
       // and a low value will be less than white
-      float redness = red(sampleColor);
-      float greenness = green(sampleColor);
-      float blueness = blue(sampleColor);
+      float rednessForward = red(sampleColorForward);
+      float greennessForward = green(sampleColorForward);
+      float bluenessForward = blue(sampleColorForward);
       
-      println("redness " + redness);
+      float rednessRight = red(sampleColorRight);
+      float greennessRight = green(sampleColorRight);
+      float bluenessRight = blue(sampleColorRight);
       
-      if (redness < 20 && blueness < 20 && greenness < 20)
+      float rednessLeft = red(sampleColorLeft);
+      float greennessLeft = green(sampleColorLeft);
+      float bluenessLeft = blue(sampleColorLeft);
+      
+      if ( rednessForward < 20 && bluenessForward < 20 && greennessForward < 20 || rednessRight < 20 && bluenessRight < 20 && greennessRight < 20 || rednessLeft < 20 && greennessLeft < 20 && bluenessLeft < 20 )
       {
          speed = 0;   
       }  
@@ -357,21 +300,21 @@ class Car
         if (thePower.powerUp() == true)
         {
           println("hit the box!"); 
-          speed = 10.0; 
+          speed = 7.0; 
           println("speed " + speed);
         }
         else 
         { 
-          speed = 3.0; 
+          speed = 4.0; 
         }
-        if (theSpin.spinUp() == true )
-        {
-          speed = 2; 
-        }
-        else
-        {
-          speed = 3; 
-        }
+//        if (theSpin.spinUp() == true )
+//        {
+//          speed = 3; 
+//        }
+//        else
+//        {
+//          speed = 6; 
+//        }
       }
     }
   }

@@ -30,6 +30,9 @@ class Power
   
   void display()
   {
+    // while the xPos is grey display a power up 
+    
+    
     pushMatrix();
     fill(0,255,0,100);
     translate(xPos,yPos,zPos);
