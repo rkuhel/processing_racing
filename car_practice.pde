@@ -21,9 +21,10 @@ Board theBoard;
 //create barrier
 Barrier theBarrier;
 
-Power thePower;
+Power[] thePower = new Power[3];
+Spin[] theSpin = new Spin[3];
 
-Spin theSpin;
+
 
 boolean thisSwitch = true; 
 
@@ -33,6 +34,8 @@ PImage background;
 // rotation value for spinning our pikachus
 int angle = 0;
 int state; 
+
+int extra = 0; 
 
 
 void setup() 
@@ -51,12 +54,7 @@ void setup()
   }
   else 
   {
-    //print them out
-//    println("available cameras: ");
-//    for (int i = 0; i < cameras.length; i++)
-//    {
-//      println(i + ": " + cameras[i]);
-//    }
+
     // The camera can be initialized directly using an element
     // from the array returned by list() - this will access the camera
     // using its default width and height
@@ -75,16 +73,6 @@ void setup()
   }
   
   
-//  String[] cams = Capture.list();
-//  for (int i = 0; i < cams.length; i++) {
-//    println(cams[i]);
-//  }
-//  
-//  // create our video object
-////  video = new Capture();
-//  video = new Capture(this, 640, 480);
-//  video.start();
-  
   // create a new AR marker object
   // note that "camera_para.dat" has to be in the data folder of your sketch
   // this is used to correct for distortions in your webcam
@@ -94,12 +82,21 @@ void setup()
   // 80 is the width of the pattern
   augmentedRealityMarkers.addARMarker("patt.hiro", 80);
   
-  playerB = new Car(-200, -70, 0);
-  playerA = new Car(-160, -70, 0);
+  playerB = new Car(-250, 0, 0);
+  playerA = new Car(-270, 0, 0);
 
   theBarrier = new Barrier(50,0,0); 
-  thePower = new Power(100,100,20);
-  theSpin = new Spin ( 150,150, 20);
+  
+  // 3 power ups and spin ups 
+  thePower[0] = new Power(100,100,20);
+  theSpin[0] = new Spin ( 150,150, 0);
+  
+  thePower[1] = new Power(-10,-27,20);
+  theSpin[1] = new Spin( -170,-141, 0);
+  
+  
+  thePower[2] = new Power(154,-3,20);
+  theSpin[2] = new Spin (-72,127,0);
   
   background = loadImage("racetrack.png");
 }
@@ -109,6 +106,8 @@ void draw()
   
   if(state == 0)
   {
+    background(0,255,0);
+    fill(100,100,100);
     text("Welcome to the game",200,200);
     if (keyPressed)
     {
@@ -120,21 +119,28 @@ void draw()
     background(31,182,20);
     fill(100,100,100);
     text("player A wins!", 200,200);
+    if (mousePressed)
+    {
+      state = 0; 
+      playerB = new Car(-250, 0, 0);
+      playerA = new Car(-270, 0, 0);
+    }
   }
   else if (state == 2)
   {
      background(31,182,20);
      fill(100,100,100);
      text("player B wins!", 200,200);
+    if (mousePressed)
+    {
+      state = 0; 
+      playerB = new Car(-250, 0, 0);
+      playerA = new Car(-270, 0, 0);
+    }
   }
   else 
   {
-      int seconds = int( millis()/1000 );
-      fill(255,255,255);
-      text("Time: " + seconds, 10,10);
-      text("Player A: " + playerA.score, 10,20);
-      text("Player B: " + playerB.score, 10,30);
-    
+
     // we only really want to do something if there is fresh data from the camera waiting for us
     if (video.available())
     {
@@ -190,13 +196,13 @@ void draw()
         }
         
         // Player B
-        if (keyPressed)
+        if (keyPressed && key == CODED )
         {
-          if (key == 'd')
+          if (keyCode == DOWN)
           {
           playerB.moveRight();
           }
-          if (key == 'a')
+          if (keyCode == UP)
           {
           playerB.moveLeft();
           }
@@ -216,43 +222,89 @@ void draw()
         }
         playerA.display();
         playerB.display();
-  
-  //      theBarrier.display();
-        thePower.powerUp();
-        if (thePower.powerUp() == false && thisSwitch == false)
+
+   
+        // power up detects if it hits player 
+        thePower[0].powerUp(playerA.xPos,playerA.yPos,playerA.zPos, playerA);
+        thePower[0].powerUp(playerB.xPos,playerB.yPos,playerB.zPos, playerB);
+        thePower[0].display();
+        
+        // spin detects if it hits the player 
+        theSpin[1].spinUp(playerA.xPos,playerA.yPos,playerA.zPos, playerA);
+        theSpin[1].spinUp(playerA.xPos,playerA.yPos,playerA.zPos, playerB);
+        theSpin[1].display();
+        
+        extra++;  
+        
+        if ( extra > 100 )
         {
-          println("no display!");
+          // power up detects if it hits player 
+          thePower[2].powerUp(playerA.xPos,playerA.yPos,playerA.zPos, playerA);
+          thePower[2].powerUp(playerB.xPos,playerB.yPos,playerB.zPos, playerB);
+          thePower[2].display();
         }
-        if (thePower.powerUp() == true) 
+        
+        else if ( extra > 150 )
         {
-          thisSwitch = false;
+          // spin detects if it hits the player 
+          theSpin[2].spinUp(playerA.xPos,playerA.yPos,playerA.zPos, playerA);
+          theSpin[2].spinUp(playerA.xPos,playerA.yPos,playerA.zPos, playerB);
+          theSpin[2].display();
+        
         }
-        if(thisSwitch == true)
+        else if (extra > 200)
+        {         
+          // power up detects if it hits player 
+          thePower[3].powerUp(playerA.xPos,playerA.yPos,playerA.zPos, playerA);
+          thePower[3].powerUp(playerB.xPos,playerB.yPos,playerB.zPos, playerB);
+          thePower[3].display(); 
+          
+          // spin detects if it hits the player 
+          theSpin[3].spinUp(playerA.xPos,playerA.yPos,playerA.zPos, playerA);
+          theSpin[3].spinUp(playerA.xPos,playerA.yPos,playerA.zPos, playerB);
+          theSpin[3].display();
+   
+          
+        }
+        else 
         {
-        thePower.display();
+            if (extra > 400)
+            {
+              extra = 0; 
+            }
         }
-  
-        theSpin.display();
-        theSpin.spinUp();
+
+
+
+        
+        // move the player 
         playerA.move(); 
         playerB.move(); 
   
-   
+        // display the background 
         pushMatrix();
         imageMode(CENTER);
         translate(-700,-500,-40);
         image(background, width,height);
-        popMatrix();   
+        popMatrix();  
         
-  
+        // see if the player hits a border 
         playerA.bumper(); 
-        playerB.bumper(); 
+        playerB.bumper();
   
         // reset to the default perspective
         perspective();
   
         // restore the 2D transformation matrix
         popMatrix();
+        
+        int seconds = int( millis()/1000 );
+        fill(255,255,255);
+        hint(DISABLE_DEPTH_TEST);
+        text("Time: " + seconds, 10,10);
+        text("Player A: " + playerA.score, 10,20);
+        text("Player B: " + playerB.score, 10,30);
+    
       }
     }
   }

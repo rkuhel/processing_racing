@@ -4,6 +4,8 @@ class Spin
   float yPos;
   float zPos;
   int counter = 150;
+  boolean spinSwitch = true; 
+  int i =0; 
   
   Spin(float x, float y, float z)
   {
@@ -11,28 +13,47 @@ class Spin
     yPos = y;
     zPos = z; 
   }
-  boolean spinUp()
-  {
   
-    if( ( (dist(playerA.xPos, playerA.yPos, playerA.zPos, theSpin.xPos, theSpin.yPos, theSpin.zPos) < 50) || (dist(playerB.xPos, playerB.yPos, playerB.zPos, theSpin.xPos, theSpin.yPos, theSpin.zPos) < 50) ) || (counter < 150 && counter > 0) )
-    {
-      counter--;
-      return true; 
-    }
-    else 
-    {
-      counter = 150;
-      return false; 
-    }
+  boolean spinUp(float x, float y, float z, Car c)
+  {
 
-  }
+      if (spinSwitch == true || (counter < 150 && counter > 0) )
+      {
+        if( ( dist(x, y, z, theSpin[0].xPos, theSpin[0].yPos, theSpin[0].zPos) < 50) || (counter < 150 && counter > 0) )
+        {
+          counter--;
+          if (c.forwardHit == false && c.rightHit == false && c.leftHit == false)
+          {
+            c.speed = 1; 
+          }
+          spinSwitch = false; 
+          println("hit the spin up");
+          return true; 
+        }
+        else  
+        {
+          counter = 150;
+          println("spin ended");
+          return false; 
+        }
+      }
+      else 
+      {
+        println("spin was hit and switchSpin is now false");
+        return false; 
+      }
+    }
+ 
   void display()
   {
-    pushMatrix();
-    fill(255,255,255);
-    translate(xPos,yPos,zPos);
-    sphere(20);
-    popMatrix();
+    if (spinSwitch == true )
+    {
+      pushMatrix();
+      fill(255,255,255);
+      translate(xPos,yPos,zPos);
+      sphere(20);
+      noFill(); 
+      popMatrix();
+    }
   }
-
 }

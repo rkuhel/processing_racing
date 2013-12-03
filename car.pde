@@ -10,6 +10,10 @@ class Car
   float angleB;
   float speed; 
   
+  boolean forwardHit = false;
+  boolean rightHit = false;
+  boolean leftHit = false;
+  
   float red, blue, green; 
   
   float sensorX, sensorY, sensorLeftX, sensorLeftY, sensorRightX, sensorRightY;
@@ -31,16 +35,11 @@ class Car
     blue = random(255); 
     green = random(255);   
   
-  
     sensorX = 0;
     sensorY = 0;    
   }
   void display()
   {
-
-//    float Cx = constrain(xPos, -190, 320);  
-//    float Cy = constrain(yPos, -180, 170);
-    
     pushMatrix();
     translate(xPos, yPos, zPos);
     rotate(radians(angle));
@@ -179,6 +178,9 @@ popMatrix();
   {  
     this.xPos += (this.dx * speed);
     this.yPos += (this.dy * speed);
+    println("xPos " + xPos); 
+    println("yPos " + yPos); 
+
   }
 
   void keepScore()
@@ -230,6 +232,8 @@ popMatrix();
     {
       background(255, 204, 0);
       fill(255,255,255);
+      playerB.score = 0;
+      playerA.score = 0;
       state = 1; 
       println("playerA wins!");
     }
@@ -237,6 +241,8 @@ popMatrix();
     {
       background(255, 204, 255);
       fill(255,255,255);
+      playerB.score = 0;
+      playerA.score = 0;
       state = 2; 
       println("playerB wins!");
     }
@@ -266,57 +272,80 @@ popMatrix();
     int locationRight = xBumperRight + yBumperRight*width;
     int locationLeft = xBumperLeft + yBumperLeft*width;
 
+//    boolean forwardHit = false;
+//    boolean rightHit = false;
+//    boolean leftHit = false;
     
-    if (locationForward < pixels.length && locationForward >= 0 || locationRight < pixels.length && locationRight >= 0 ||locationLeft < pixels.length && locationLeft >= 0 )
+    // check forward
+    if (locationForward < pixels.length && locationForward >= 0)
     {
       color sampleColorForward = color(pixels[locationForward]);
-      color sampleColorRight = color(pixels[locationRight]);
-      color sampleColorLeft = color(pixels[locationLeft]);
 
-
-      // let's look at the color value in terms of how much red it has.
-      // remember that white = 255,255,255
-      // so if we see a high red value we can probably assume the color here is white
-      // and a low value will be less than white
       float rednessForward = red(sampleColorForward);
       float greennessForward = green(sampleColorForward);
       float bluenessForward = blue(sampleColorForward);
       
+      if ( rednessForward < 20 && bluenessForward < 20 && greennessForward < 20 )
+      {
+        forwardHit = true;
+      }
+      else
+      {
+        forwardHit = false;
+      }
+    }
+    
+    //right
+    if (locationRight < pixels.length && locationRight >= 0)
+    {
+      color sampleColorRight = color(pixels[locationRight]);
+
       float rednessRight = red(sampleColorRight);
       float greennessRight = green(sampleColorRight);
       float bluenessRight = blue(sampleColorRight);
       
+      if ( rednessRight < 20 && bluenessRight < 20 && greennessRight < 20 )
+      {
+        rightHit = true;
+      }
+      else
+      {
+        rightHit = false;
+      }
+    }
+    
+    //left
+    if (locationLeft < pixels.length && locationLeft >= 0)
+    {
+      color sampleColorLeft = color(pixels[locationLeft]);
+
       float rednessLeft = red(sampleColorLeft);
       float greennessLeft = green(sampleColorLeft);
       float bluenessLeft = blue(sampleColorLeft);
       
-      if ( rednessForward < 20 && bluenessForward < 20 && greennessForward < 20 || rednessRight < 20 && bluenessRight < 20 && greennessRight < 20 || rednessLeft < 20 && greennessLeft < 20 && bluenessLeft < 20 )
+      if ( rednessLeft < 20 && greennessLeft < 20 && bluenessLeft < 20 )
       {
-         speed = 0;   
-      }  
-
+        leftHit = true;
+      }
       else
       {
-        if (thePower.powerUp() == true)
-        {
-          println("hit the box!"); 
-          speed = 7.0; 
-          println("speed " + speed);
-        }
-        else 
-        { 
-          speed = 4.0; 
-        }
-//        if (theSpin.spinUp() == true )
-//        {
-//          speed = 3; 
-//        }
-//        else
-//        {
-//          speed = 6; 
-//        }
+        leftHit = false;
       }
+    }
+    
+     
+    
+    if (forwardHit == true || rightHit == true || leftHit == true)
+    {
+      speed = 0;
+    }
+    else
+    {
+      speed= 4; 
     }
   }
 }
+
+
+
 
