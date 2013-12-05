@@ -13,13 +13,11 @@ class Power
     yPos = y;
     zPos = z; 
   }
-  boolean powerUp(float x, float y, float z, Car c)
+  boolean powerUp(Car c)
   {
-//    for (int i = 0; i < 3; i++)
-//    {
       if (powerSwitch == true || (counter < 150 && counter > 0) )
       {
-        if( ( dist(x, y, z, thePower[0].xPos, thePower[0].yPos, thePower[0].zPos) < 50) || (counter < 150 && counter > 0) )
+        if( ( dist(xPos, yPos, zPos, c.xPos, c.yPos, c.zPos) < 50) || (counter < 150 && counter > 0) )
         {
           counter--;
           powerSwitch = false;
@@ -41,7 +39,6 @@ class Power
       {
         return false; 
       }
-//    }
   }
   
   
@@ -53,7 +50,7 @@ class Power
       fill(0,255,0,100);
       translate(xPos,yPos,zPos);
       sphere(20);
-      noFill(); 
+//      noFill(); 
       popMatrix();
     }
   }

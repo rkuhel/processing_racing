@@ -21,8 +21,8 @@ Board theBoard;
 //create barrier
 Barrier theBarrier;
 
-Power[] thePower = new Power[3];
-Spin[] theSpin = new Spin[3];
+Power[] thePower = new Power[6];
+Spin[] theSpin = new Spin[6];
 
 
 
@@ -30,6 +30,10 @@ boolean thisSwitch = true;
 
 //race track image
 PImage background; 
+PImage startScreen; 
+PImage winB;
+PImage winA; 
+
 
 // rotation value for spinning our pikachus
 int angle = 0;
@@ -92,13 +96,25 @@ void setup()
   theSpin[0] = new Spin ( 150,150, 0);
   
   thePower[1] = new Power(-10,-27,20);
-  theSpin[1] = new Spin( -170,-141, 0);
+  theSpin[1] = new Spin( -170,-50, 0);
   
   
   thePower[2] = new Power(154,-3,20);
-  theSpin[2] = new Spin (-72,127,0);
+  theSpin[2] = new Spin (-4,-60,0);
+  
+  thePower[3] = new Power(-90,123,20);
+  theSpin[3] = new Spin (-145,123,0);
+  
+  thePower[4] = new Power(100,100,20);
+  theSpin[4] = new Spin ( 150,150, 0);
+  
+  thePower[5] = new Power(-10,-27,20);
+  theSpin[5] = new Spin( -170,-50, 0);
   
   background = loadImage("racetrack.png");
+  startScreen = loadImage("startScreen.png");
+  winB = loadImage("playerBWin.png");
+  winA = loadImage("playerAWin.png");
 }
 
 void draw()
@@ -106,9 +122,7 @@ void draw()
   
   if(state == 0)
   {
-    background(0,255,0);
-    fill(100,100,100);
-    text("Welcome to the game",200,200);
+    background(startScreen);
     if (keyPressed)
     {
       state = 3; 
@@ -116,9 +130,7 @@ void draw()
   }
   else if ( state == 1)
   {
-    background(31,182,20);
-    fill(100,100,100);
-    text("player A wins!", 200,200);
+    background(winB);
     if (mousePressed)
     {
       state = 0; 
@@ -128,9 +140,7 @@ void draw()
   }
   else if (state == 2)
   {
-     background(31,182,20);
-     fill(100,100,100);
-     text("player B wins!", 200,200);
+     background(winB);
     if (mousePressed)
     {
       state = 0; 
@@ -225,50 +235,76 @@ void draw()
 
    
         // power up detects if it hits player 
-        thePower[0].powerUp(playerA.xPos,playerA.yPos,playerA.zPos, playerA);
-        thePower[0].powerUp(playerB.xPos,playerB.yPos,playerB.zPos, playerB);
+        thePower[0].powerUp(playerA);
+        thePower[0].powerUp(playerB);
         thePower[0].display();
         
         // spin detects if it hits the player 
-        theSpin[1].spinUp(playerA.xPos,playerA.yPos,playerA.zPos, playerA);
-        theSpin[1].spinUp(playerA.xPos,playerA.yPos,playerA.zPos, playerB);
+        theSpin[1].spinUp(playerA);
+        theSpin[1].spinUp(playerB);
         theSpin[1].display();
         
+     
         extra++;  
         
         if ( extra > 100 )
         {
           // power up detects if it hits player 
-          thePower[2].powerUp(playerA.xPos,playerA.yPos,playerA.zPos, playerA);
-          thePower[2].powerUp(playerB.xPos,playerB.yPos,playerB.zPos, playerB);
+          thePower[2].powerUp(playerA);
+          thePower[2].powerUp(playerB);
           thePower[2].display();
+          println("extra " + extra);
         }
         
-        else if ( extra > 150 )
+        if ( extra > 400 )
         {
           // spin detects if it hits the player 
-          theSpin[2].spinUp(playerA.xPos,playerA.yPos,playerA.zPos, playerA);
-          theSpin[2].spinUp(playerA.xPos,playerA.yPos,playerA.zPos, playerB);
+          theSpin[2].spinUp(playerA);
+          theSpin[2].spinUp(playerB);
           theSpin[2].display();
-        
+
         }
-        else if (extra > 200)
+        if (extra > 600)
         {         
           // power up detects if it hits player 
-          thePower[3].powerUp(playerA.xPos,playerA.yPos,playerA.zPos, playerA);
-          thePower[3].powerUp(playerB.xPos,playerB.yPos,playerB.zPos, playerB);
+          thePower[3].powerUp(playerA);
+          thePower[3].powerUp(playerB);
           thePower[3].display(); 
           
           // spin detects if it hits the player 
-          theSpin[3].spinUp(playerA.xPos,playerA.yPos,playerA.zPos, playerA);
-          theSpin[3].spinUp(playerA.xPos,playerA.yPos,playerA.zPos, playerB);
+          theSpin[3].spinUp(playerA);
+          theSpin[3].spinUp(playerB);
           theSpin[3].display();
-   
+        }
+        
+        if (extra > 800)
+        {         
+          // power up detects if it hits player 
+          thePower[4].powerUp(playerA);
+          thePower[4].powerUp(playerB);
+          thePower[4].display(); 
           
+          // spin detects if it hits the player 
+          theSpin[4].spinUp(playerA);
+          theSpin[4].spinUp(playerB);
+          theSpin[4].display();
+        }
+        
+        if (extra > 1000)
+        {         
+          // power up detects if it hits player 
+          thePower[5].powerUp(playerA);
+          thePower[5].powerUp(playerB);
+          thePower[5].display(); 
+          
+          // spin detects if it hits the player 
+          theSpin[5].spinUp(playerA);
+          theSpin[5].spinUp(playerB);
+          theSpin[5].display();
         }
         else 
         {
-            if (extra > 400)
+            if (extra > 1500)
             {
               extra = 0; 
             }
@@ -289,6 +325,7 @@ void draw()
         popMatrix();  
         
         // see if the player hits a border 
+        loadPixels();
         playerA.bumper(); 
         playerB.bumper();
   

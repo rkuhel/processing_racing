@@ -10,6 +10,8 @@ class Car
   float angleB;
   float speed; 
   
+
+  
   boolean forwardHit = false;
   boolean rightHit = false;
   boolean leftHit = false;
@@ -230,21 +232,16 @@ popMatrix();
   {
     if (playerA.score > 0)
     {
-      background(255, 204, 0);
-      fill(255,255,255);
       playerB.score = 0;
       playerA.score = 0;
       state = 1; 
-      println("playerA wins!");
     }
     else if (playerB.score > 0)
     {
-      background(255, 204, 255);
-      fill(255,255,255);
       playerB.score = 0;
       playerA.score = 0;
       state = 2; 
-      println("playerB wins!");
+      
     }
     else 
     {
@@ -267,7 +264,7 @@ popMatrix();
     int xBumperLeft = (int)sensorLeftX;
     int yBumperLeft = (int)sensorLeftY;
     // ok, now we can use our xPos and yPos variables to grab the color value
-    loadPixels();
+//    loadPixels();
     int locationForward = xBumper + yBumper*width;
     int locationRight = xBumperRight + yBumperRight*width;
     int locationLeft = xBumperLeft + yBumperLeft*width;
