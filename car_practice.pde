@@ -18,8 +18,7 @@ Car playerB;
 //board object
 Board theBoard;
 
-//create barrier
-Barrier theBarrier;
+
 
 Power[] thePower = new Power[6];
 Spin[] theSpin = new Spin[6];
@@ -33,6 +32,8 @@ PImage background;
 PImage startScreen; 
 PImage winB;
 PImage winA; 
+int seconds;
+
 
 
 // rotation value for spinning our pikachus
@@ -88,8 +89,6 @@ void setup()
   
   playerB = new Car(-250, 0, 0);
   playerA = new Car(-270, 0, 0);
-
-  theBarrier = new Barrier(50,0,0); 
   
   // 3 power ups and spin ups 
   thePower[0] = new Power(100,100,20);
@@ -133,19 +132,26 @@ void draw()
     background(winB);
     if (mousePressed)
     {
+      seconds = 0;
+      playerB.xPos = -250;
+      playerB.yPos = 0;
+      playerA.xPos = -270;
+      playerA.yPos = 0; 
       state = 0; 
-      playerB = new Car(-250, 0, 0);
-      playerA = new Car(-270, 0, 0);
-    }
+
+     }
   }
   else if (state == 2)
   {
      background(winB);
     if (mousePressed)
     {
+      seconds = 0;
+      playerB.xPos = -250;
+      playerB.yPos = 0;
+      playerA.xPos = -270;
+      playerA.yPos = 0; 
       state = 0; 
-      playerB = new Car(-250, 0, 0);
-      playerA = new Car(-270, 0, 0);
     }
   }
   else 
@@ -310,9 +316,6 @@ void draw()
             }
         }
 
-
-
-        
         // move the player 
         playerA.move(); 
         playerB.move(); 
@@ -334,8 +337,7 @@ void draw()
   
         // restore the 2D transformation matrix
         popMatrix();
-        
-        int seconds = int( millis()/1000 );
+        seconds = int( millis()/1000 ); 
         fill(255,255,255);
         hint(DISABLE_DEPTH_TEST);
         text("Time: " + seconds, 10,10);
