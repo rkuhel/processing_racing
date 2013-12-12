@@ -1,7 +1,7 @@
-"Box Car" Augmented Reality Racing Game 
+Augmented Reality Racing Game - Processing
 =================
 
-augmented reality racing game made for the processing graphics framework
+augmented reality racing game made for the processing graphics framework. 
 
 libraries used: 
 
